@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  filebeat.yml: |
+    filebeat.inputs:
+    - type: log
+      paths:
+        - /usr/share/filebeat/my-file.log
+        
+    output.logstash:
+      hosts: ['logstash:5044']
+
+kind: ConfigMap
+metadata:
+  name: filebeat-configmap
+  namespace: elastic

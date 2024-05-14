@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elasticsearch-config
+  namespace: elastic
+data:
+  elasticsearch.yml: |
+    # Add your Elasticsearch configuration here
+    cluster.name: my-cluster
+    node.name: my-node
+    network.host: 0.0.0.0

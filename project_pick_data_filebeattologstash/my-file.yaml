@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-filebeat
+  namespace: elastic
+data:
+  my-file.log: |
+    This
+    You
+    Make

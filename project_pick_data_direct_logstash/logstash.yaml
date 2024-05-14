@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+  namespace: elastic
+spec:
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+    spec:
+      containers:
+      - name: logstash
+        image: docker.elastic.co/logstash/logstash:7.15.0
+        ports:
+        - containerPort: 5044  # Port for receiving logs from other containers
+          name: logstash
+        volumeMounts:
+        - name: logstash-config
+          mountPath: /usr/share/logstash/pipeline/logstash.conf
+          subPath: logstash.conf
+        - name: log-file
+          mountPath: /usr/share/logstash/config/my-file.log
+          subPath: my-file.log 
+      volumes:
+      - name: logstash-config
+        configMap:
+          name: logstash-configmap
+      - name: log-file
+        configMap:
+          name: log-file
+ 
+          
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: logstash
+  namespace: elastic
+spec:
+  selector:
+    app: logstash
+  ports:
+  - protocol: TCP
+    port: 5044
+    targetPort: 5044
